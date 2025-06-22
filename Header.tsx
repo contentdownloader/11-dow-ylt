@@ -1,3 +1,4 @@
+// components/Header.tsx
 import React from 'react';
 import { Download, Shield, Zap } from 'lucide-react';
 
