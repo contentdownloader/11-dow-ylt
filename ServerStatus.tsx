@@ -1,3 +1,4 @@
+// components/ServerStatus.tsx
 import React from 'react';
 import { Server, AlertCircle, CheckCircle } from 'lucide-react';
 
@@ -6,6 +7,9 @@ interface ServerStatusProps {
 }
 
 export const ServerStatus: React.FC<ServerStatusProps> = ({ isOnline }) => {
+  // Use import.meta.env.DEV for Vite to check if in development mode
+  const isDevelopment = import.meta.env.DEV; 
+
   return (
     <div className={`max-w-2xl mx-auto p-4 rounded-xl border-2 ${
       isOnline 
@@ -22,13 +26,22 @@ export const ServerStatus: React.FC<ServerStatusProps> = ({ isOnline }) => {
         ) : (
           <>
             <AlertCircle className="h-5 w-5" />
-            <span className="font-medium">Server Offline - Please start the backend server</span>
+            <span className="font-medium">
+              {isDevelopment 
+                ? 'Server Offline - Please start the backend server' 
+                : 'Server Offline - Please try again later'} {/* Production message */}
+            </span>
           </>
         )}
       </div>
-      {!isOnline && (
+      {!isOnline && isDevelopment && ( // Only show developer instructions in development if offline
         <p className="text-center text-sm mt-2">
           Run <code className="bg-red-100 px-2 py-1 rounded">npm run server</code> in a separate terminal
+        </p>
+      )}
+      {!isOnline && !isDevelopment && ( // Show a simpler message in production if offline
+        <p className="text-center text-sm mt-2">
+          We're currently experiencing technical difficulties.
         </p>
       )}
     </div>
