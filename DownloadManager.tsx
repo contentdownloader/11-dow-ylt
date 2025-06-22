@@ -1,7 +1,6 @@
-// components/DownloadManager.tsx
 import React from 'react';
 import { Download, CheckCircle, AlertCircle, X, ExternalLink, FileDown, Eye, Info } from 'lucide-react';
-import { Download as DownloadType } from '../App'; // Assuming DownloadType is defined in App.tsx
+import { Download as DownloadType } from '../App';
 
 interface DownloadManagerProps {
   downloads: DownloadType[];
@@ -59,111 +58,102 @@ export const DownloadManager: React.FC<DownloadManagerProps> = ({ downloads, onR
         </div>
 
         <div className="divide-y divide-gray-100">
-          {downloads.length === 0 ? (
-            <div className="p-6 text-center text-gray-500">
-              <Info className="h-8 w-8 mx-auto mb-3 text-purple-400" />
-              <p className="text-lg">No active downloads.</p>
-              <p className="text-sm">Initiate a download from the 'Downloader' tab.</p>
-            </div>
-          ) : (
-            downloads.map((download) => (
-              <div key={download.id} className="p-6 hover:bg-gray-50 transition-colors duration-200">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-3 mb-3">
-                      {getStatusIcon(download.status)}
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getPlatformColor(download.platform)}`}>
-                        {download.platform}
+          {downloads.map((download) => (
+            <div key={download.id} className="p-6 hover:bg-gray-50 transition-colors duration-200">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center space-x-3 mb-3">
+                    {getStatusIcon(download.status)}
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getPlatformColor(download.platform)}`}>
+                      {download.platform}
+                    </span>
+                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                      {download.contentType}
+                    </span>
+                    <span className="text-sm font-medium text-gray-700">
+                      {getStatusText(download.status)}
+                    </span>
+                    {download.size && (
+                      <span className="text-xs text-gray-500">
+                        {download.size}
                       </span>
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
-                        {download.contentType}
-                      </span>
-                      <span className="text-sm font-medium text-gray-700">
-                        {getStatusText(download.status)}
-                      </span>
-                      {download.size && (
-                        <span className="text-xs text-gray-500">
-                          {download.size}
-                        </span>
-                      )}
-                    </div>
-                    
-                    <div className="flex items-center space-x-2 mb-3">
-                      <ExternalLink className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                      <p className="text-sm text-gray-600 truncate">{download.url}</p>
-                    </div>
-
-                    {download.note && (
-                      <div className="mb-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                        <div className="flex items-center space-x-2">
-                          <Info className="h-4 w-4 text-blue-600" />
-                          <span className="text-sm text-blue-700">{download.note}</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {download.thumbnail && (
-                      <div className="mb-3">
-                        <img 
-                          src={download.thumbnail} 
-                          alt="Content preview" 
-                          className="w-16 h-16 object-cover rounded-lg border border-gray-200"
-                        />
-                      </div>
-                    )}
-
-                    {download.status === 'ready' && download.downloadUrl && (
-                      <div className="flex items-center space-x-3">
-                        <button
-                          onClick={() => onDownload(download)}
-                          className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg font-medium hover:from-green-600 hover:to-green-700 transition-all duration-200 flex items-center space-x-2"
-                        >
-                          <FileDown className="h-4 w-4" />
-                          <span>Download File</span>
-                        </button>
-                        {download.downloadUrl && (
-                          <a
-                            href={download.downloadUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-700 flex items-center space-x-1 text-sm"
-                          >
-                            <Eye className="h-4 w-4" />
-                            <span>Preview</span>
-                          </a>
-                        )}
-                      </div>
-                    )}
-
-                    {download.status === 'completed' && download.filename && (
-                      <div className="flex items-center space-x-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="text-sm text-green-700 font-medium">
-                          Downloaded: {download.filename}
-                        </span>
-                      </div>
-                    )}
-
-                    {download.status === 'error' && download.error && (
-                      <div className="flex items-center space-x-2">
-                        <AlertCircle className="h-4 w-4 text-red-500" />
-                        <span className="text-sm text-red-700">{download.error}</span>
-                      </div>
                     )}
                   </div>
+                  
+                  <div className="flex items-center space-x-2 mb-3">
+                    <ExternalLink className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                    <p className="text-sm text-gray-600 truncate">{download.url}</p>
+                  </div>
 
-                  <button
-                    onClick={() => onRemove(download.id)}
-                    className="ml-4 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200"
-                    title="Remove download"
-                    aria-label={`Remove download for ${download.filename || download.url}`}
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
+                  {download.note && (
+                    <div className="mb-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                      <div className="flex items-center space-x-2">
+                        <Info className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm text-blue-700">{download.note}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {download.thumbnail && (
+                    <div className="mb-3">
+                      <img 
+                        src={download.thumbnail} 
+                        alt="Content preview" 
+                        className="w-16 h-16 object-cover rounded-lg border border-gray-200"
+                      />
+                    </div>
+                  )}
+
+                  {download.status === 'ready' && download.downloadUrl && (
+                    <div className="flex items-center space-x-3">
+                      <button
+                        onClick={() => onDownload(download)}
+                        className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg font-medium hover:from-green-600 hover:to-green-700 transition-all duration-200 flex items-center space-x-2"
+                      >
+                        <FileDown className="h-4 w-4" />
+                        <span>Download File</span>
+                      </button>
+                      {download.downloadUrl && (
+                        <a
+                          href={download.downloadUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-700 flex items-center space-x-1 text-sm"
+                        >
+                          <Eye className="h-4 w-4" />
+                          <span>Preview</span>
+                        </a>
+                      )}
+                    </div>
+                  )}
+
+                  {download.status === 'completed' && download.filename && (
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <span className="text-sm text-green-700 font-medium">
+                        Downloaded: {download.filename}
+                      </span>
+                    </div>
+                  )}
+
+                  {download.status === 'error' && download.error && (
+                    <div className="flex items-center space-x-2">
+                      <AlertCircle className="h-4 w-4 text-red-500" />
+                      <span className="text-sm text-red-700">{download.error}</span>
+                    </div>
+                  )}
                 </div>
+
+                <button
+                  onClick={() => onRemove(download.id)}
+                  className="ml-4 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                  title="Remove download"
+                >
+                  <X className="h-5 w-5" />
+                </button>
               </div>
-            ))
-          )}
+            </div>
+          ))}
         </div>
       </div>
     </div>

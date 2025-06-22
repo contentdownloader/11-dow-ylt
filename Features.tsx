@@ -1,4 +1,3 @@
-// components/Features.tsx
 import React from 'react';
 import { Shield, Zap, Download, Globe, Heart, Users } from 'lucide-react';
 
