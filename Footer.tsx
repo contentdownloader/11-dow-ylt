@@ -1,3 +1,4 @@
+// components/Footer.tsx
 import React from 'react';
 import { Download, Heart, Shield, Info } from 'lucide-react';
 
@@ -71,7 +72,7 @@ export const Footer: React.FC = () => {
           
           <div className="text-center mt-6 pt-6 border-t border-gray-800">
             <p className="text-gray-400 text-sm">
-              © 2024 SocialDL. All rights reserved. This tool is for downloading public content only.
+              © {new Date().getFullYear()} SocialDL. All rights reserved. This tool is for downloading public content only.
             </p>
           </div>
         </div>
